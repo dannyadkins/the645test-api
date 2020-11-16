@@ -60,7 +60,6 @@ class TweetSentimentController < ApplicationController
         return tweet_reqs
     end
     
-
     private 
     def twitter_api(company_name)
         logger.debug "Twitter API called"
