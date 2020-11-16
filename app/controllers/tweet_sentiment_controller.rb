@@ -29,7 +29,7 @@ class TweetSentimentController < ApplicationController
 
     private
     def get_sentiment(tweet)
-        uri = URI('https://language.googleapis.com/v1/documents:analyzeSentiment?key=' + Rails.application.credentials.dig[:gcloud_key])
+        uri = URI('https://language.googleapis.com/v1/documents:analyzeSentiment?key=' + Rails.application.credentials[:gcloud_key])
         http = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl = true
 
@@ -44,7 +44,7 @@ class TweetSentimentController < ApplicationController
 
     private
     def get_sentiment_concurrent(tweets)
-        endpoint = 'https://language.googleapis.com/v1/documents:analyzeSentiment?key=' + Rails.application.credentials.dig[:gcloud_key]
+        endpoint = 'https://language.googleapis.com/v1/documents:analyzeSentiment?key=' + Rails.application.credentials[:gcloud_key]
         hydra = Typhoeus::Hydra.hydra
         tweet_reqs = []
         tweets.each do |tweet|
@@ -64,6 +64,8 @@ class TweetSentimentController < ApplicationController
     private 
     def twitter_api(company_name)
         logger.debug "Twitter API called"
+        logger.debug "Key:"
+        logger.debug Rails.application.credentials.fetch(:twitter_key)
 
         query = company_name
 
@@ -77,7 +79,7 @@ class TweetSentimentController < ApplicationController
             method: 'get',
             headers: {
             "User-Agent": "v2RecentSearchRuby",
-            "Authorization": "Bearer " + Rails.application.credentials.dig[:twitter_key]
+            "Authorization": "Bearer " +  Rails.application.credentials[:twitter_key]
             },
             params: query_params
         }
