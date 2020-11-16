@@ -2,7 +2,7 @@ require 'json'
 require 'net/http'
 class CompletionController < ApplicationController
     def complete
-        key = APP_CONFIG[:gpt_key]
+        key = Rails.application.credentials.dig[:gpt_key]
         prefix = "You're speaking with a startup investor about your technology company. They're interested in growth, metrics, and your business plan. They'll ask questions and give feedback.\n\n"
         logger.debug "REQUEST:"
         request_body = request.body.read
